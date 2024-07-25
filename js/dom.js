@@ -25,7 +25,27 @@
 // //console.log(element);
 // //console.log(element.innerText);
 // element.innerText="Demo <b>New Content</b>"
-let box=document.querySelector("#box");
-box.value="Initial data";
+// let box=document.querySelector("#box");
+// box.value="Initial data";
+
+let mypara=document.querySelector("#mypara");
+let second=document.querySelector("#second");
+
+// second.addEventListener("click",function(){
+//     console.log("Clicked")
+// })
+
+second.addEventListener("click",test);
+
+mypara.addEventListener("click",test);
 
 
+
+function test(e)
+{
+    let target=e.target;
+    console.log(target.innerHTML);
+
+    //console.log("Clicked ",e);
+
+}
