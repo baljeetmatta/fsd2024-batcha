@@ -71,90 +71,154 @@
 
 
 // }
-let tasks=[];
-let id=1;
-let taskname=document.querySelector("#taskname");
-let taskList=document.querySelector("#taskList");
-taskname.addEventListener("keypress",function(e){
+let tasks = [];
+let id = 1;
+let taskname = document.querySelector("#taskname");
+let taskList = document.querySelector("#taskList");
+taskname.addEventListener("keypress", function (e) {
     //console.log(e);
-    if(e.key=="Enter")
-    {
+    if (e.key == "Enter") {
         //tasks.push(taskname.value);
-        let obj={};
-        obj.title=taskname.value;
-        obj.status='Pending';
-        obj.id=id;
+        let obj = {};
+        obj.title = taskname.value;
+        obj.status = 'Pending';
+        obj.id = id;
         id++;
         tasks.push(obj);
+        setLocalStorage();
 
         addDom(obj);
-        taskname.value="";
+        taskname.value = "";
         console.log(tasks);
 
 
 
     }
-       // console.log("Enter pressed")
+    // console.log("Enter pressed")
 })
-function addDom(task)
-{
+function addDom(task) {
     // let li=document.createElement("li");
     // li.innerText=taskname.value;
 
     // taskList.append(li);
 
-        let taskdiv=document.createElement("div");
-
-        let span=document.createElement("span");
-        span.innerText=task.title;//taskname.value;
-
-        let chk=document.createElement("input");
-        chk.setAttribute("type","checkbox");
-        chk.addEventListener("click",function(){
-            //console.log(chk.checked);
-            let status="";
-            if(chk.checked)
-            {
-                status="Completed";
-                span.style.textDecoration="line-through"
-            }
-            else
-            {
-                status="Pending";
-
-                span.style.textDecoration="none";
-
-            }
-            tasks=tasks.map(function(item){
-                if(item.id==task.id)
-                    item.status=status;
-
-                return item;
-            })
-            console.log(tasks);
+    let taskdiv = document.createElement("div");
+    taskdiv.setAttribute("id",task.id);
 
 
+    let span = document.createElement("span");
+    span.innerText = task.title;//taskname.value;
+
+    let chk = document.createElement("input");
+    chk.setAttribute("type", "checkbox");
+    chk.addEventListener("click", function () {
+        //console.log(chk.checked);
+        let status = "";
+        if (chk.checked) {
+            status = "Completed";
+            span.style.textDecoration = "line-through"
+        }
+        else {
+            status = "Pending";
+
+            span.style.textDecoration = "none";
+
+        }
+        tasks = tasks.map(function (item) {
+            if (item.id == task.id)
+                item.status = status;
+
+            return item;
         })
-        let delButton=document.createElement("button");
-        delButton.innerText="Del";
-        delButton.addEventListener("click",function(){
+        setLocalStorage();
+        console.log(tasks);
 
-            taskdiv.remove();
-            tasks=tasks.filter(function(item){
-                if(item.id!=task.id)
-                    return true;
-            })
 
-           console.log(tasks);
+    })
+    let delButton = document.createElement("button");
+    delButton.innerText = "Del";
+    // delButton.addEventListener("click", function () {
 
-        })
-        
+    //     taskdiv.remove();
+    //     tasks = tasks.filter(function (item) {
+    //         if (item.id != task.id)
+    //             return true;
+    //     })
 
-        taskdiv.append(span);
+    //     console.log(tasks);
+
+    // })
+    delButton.addEventListener("click",delHandler);
+
+
+    taskdiv.append(span);
     taskdiv.append(chk);
-taskdiv.append(delButton);
+    taskdiv.append(delButton);
 
-        taskList.append(taskdiv);
+    taskList.append(taskdiv);
 
 
 }
+function delHandler(e)
+{
+    let parent=e.target.parentNode;
+    let id=parent.getAttribute("id");
+  //STEP 1 Div rempve
+    parent.remove();
+          tasks = tasks.filter(function (item) {
+            if (item.id != id)
+                return true;
+        })
+        setLocalStorage();
+        console.log(tasks);
+
+
+
+
+
+}
+function setLocalStorage()
+{
+    localStorage.setItem("tasks",JSON.stringify(tasks));
+
+
+    // let arr=["One","Two"];
+    // document.write(arr);
+//     let arr=[];
+//     let obj={};
+//     obj.title="Code";
+
+//    // arr.push(obj);
+
+//     document.write(JSON.stringify(obj));
+//     localStorage.setItem("items",JSON.stringify(obj));
+// let data=JSON.parse( localStorage.getItem("items"));
+
+// console.log(data.title);
+
+//console.log(obj);
+
+   // let name="Code";
+    //localStorage.setItem("items",arr);
+    //let item=localStorage.getItem("items");
+    //console.log(item[0]);
+
+
+
+}
+//setLocalStorage();
+function getLocalStorage()
+{
+    if(localStorage.getItem("tasks"))
+     tasks=JSON.parse( localStorage.getItem("tasks"));
+
+
+     console.log(tasks)
+    tasks.forEach(element => {
+        
+        addDom(element);
+});
+
+     
+}
+getLocalStorage();
