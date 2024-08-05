@@ -1,0 +1,23 @@
+<html>
+    <body>
+        <button id="btn">Stop</button>
+
+        <script>
+            console.log("Hello");
+          let id=  setTimeout(test,0);
+           //test();
+
+            console.log("World");
+            function test(){
+                console.log("Timeout happens");
+
+            }
+
+            let btn=document.querySelector("#btn");
+            btn.addEventListener("click",function(){
+                clearInterval(id);
+
+            })
+        </script>
+    </body>
+</html>
